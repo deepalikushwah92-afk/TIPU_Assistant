@@ -43,7 +43,10 @@ jobs:
           PROJECT_DIR="$(find /tmp/tipu-source -name settings.gradle.kts -print -quit | xargs dirname)"
           test -f "$PROJECT_DIR/settings.gradle.kts"
           cp -a "$PROJECT_DIR"/. .
-
+      - name: Fix Java Kotlin Compatibility
+        run: |
+          sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' app/build.gradle.kts
+          sed -i 's/jvmTarget = "1.8"/jvmTarget = "17"/g' app/build.gradle.kts
       - name: Build APK
         run: gradle assembleDebug --no-daemon
 
